@@ -36,18 +36,28 @@ spec:
           env: 
           - name: SEGWAY_SYSLOG_PORT
             value: {{ .Values.service.port | quote }}
+          - name: SEGWAY_DEST_LOGSCALE_URL  
+            valueFrom:  
+              secretKeyRef:
+                name: {{ include "segway-sys-dest-logscale.serviceAccountName" . }}
+                key: url
+          - name: SEGWAY_DEST_LOGSCALE_TOKEN
+            valueFrom:  
+              secretKeyRef:
+                name: {{ include "segway-sys-dest-logscale.serviceAccountName" . }}
+                key: token
           ports:
             - name: syslog-tcp
               containerPort: {{ .Values.service.port }}
               protocol: TCP
-          livenessProbe:
-            httpGet:
-              path: /
-              port: http
-          readinessProbe:
-            httpGet:
-              path: /
-              port: http
+          # livenessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: http
+          # readinessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: http
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}
