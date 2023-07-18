@@ -33,19 +33,17 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          {{- with .Values.args }}
+          args:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
           env: 
           - name: SEGWAY_SYSLOG_PORT
             value: {{ .Values.service.port | quote }}
-          - name: SEGWAY_DEST_LOGSCALE_URL  
-            valueFrom:  
-              secretKeyRef:
-                name: {{ include "segway-sys-dest-logscale.serviceAccountName" . }}
-                key: url
-          - name: SEGWAY_DEST_LOGSCALE_TOKEN
-            valueFrom:  
-              secretKeyRef:
-                name: {{ include "segway-sys-dest-logscale.serviceAccountName" . }}
-                key: token
+          - name: SEGWAY_DEST_LOGSCALE_URL
+            value: {{ .Values.secret.url | quote }}
+          - name: SEGWAY_DEST_LOGSCALE_INSTANCE
+            value: {{ .Release.Name | quote }}
           ports:
             - name: syslog-tcp
               containerPort: {{ .Values.service.port }}
@@ -60,6 +58,13 @@ spec:
           #     port: http
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+          - mountPath: /var/lib/syslog-ng/
+            name: cache-volume          
+      volumes:
+      - name: cache-volume
+        emptyDir:
+          sizeLimit: 10Mi          
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
