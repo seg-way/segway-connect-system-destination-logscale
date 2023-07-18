@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       dockerhub-publish: ${{ steps.dockerhub-publish.outputs.defined }}
-      registry: ghcr.io/${{ github.repository }}/container:${{ fromJSON(steps.docker_action_meta.outputs.json).labels['org.opencontainers.image.version'] }}
+      registry: ghcr.io/${{ github.repository_owner }}/containers/${{ github.event.repository.name }}:${{ fromJSON(steps.docker_action_meta.outputs.json).labels['org.opencontainers.image.version'] }}
       container_tags: ${{ steps.docker_action_meta.outputs.tags }}
       container_labels: ${{ steps.docker_action_meta.outputs.labels }}
       container_buildtime: ${{ fromJSON(steps.docker_action_meta.outputs.json).labels['org.opencontainers.image.created'] }}
@@ -58,7 +58,7 @@ jobs:
         id: docker_action_meta
         uses: docker/metadata-action@v4.6.0
         with:
-          images: ghcr.io/${{ github.repository }}/container
+          images: ghcr.io/${{ github.repository_owner }}/containers/${{ github.event.repository.name }}
           flavor: |
             latest=false
           tags: |
