@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image:
-  repository: ghcr.io/seg-way/segway-connect-system-destination-logscale/container
+  repository: ghcr.io/seg-way/containers/segway-connect-system-destination-logscale
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: ""
