@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 set -ev
-helm push $(ls *.tgz) oci://ghcr.io/${GITHUB_REPOSITORY_OWNER}/${GITHUB_REPOSITORY#*/}/charts
+helm push $(ls *.tgz) oci://ghcr.io/${GITHUB_REPOSITORY_OWNER}/charts
 
 unset GITHUB_TOKEN
 export GH_TOKEN=$SEGWAY_CHARTS_WRITE
