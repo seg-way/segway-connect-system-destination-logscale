@@ -4,6 +4,7 @@ helm push $(ls *.tgz) oci://ghcr.io/${GITHUB_REPOSITORY_OWNER}/${GITHUB_REPOSITO
 
 unset GITHUB_TOKEN
 export GH_TOKEN=$SEGWAY_CHARTS_WRITE
+gh auth login
 gh auth setup-git
 pushd /tmp
 gh repo clone ${GITHUB_REPOSITORY_OWNER}/${SEGWAY_CHARTS_REPO}
