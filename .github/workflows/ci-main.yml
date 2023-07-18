@@ -121,4 +121,5 @@ jobs:
             conventional-changelog-conventionalcommits
         env:
           GITHUB_TOKEN: ${{ github.token }}
-          SEGWAY_CHARTS_REPO: ${{ secrets.SEGWAY_CHARTS_REPO }}
+          SEGWAY_CHARTS_WRITE: ${{ secrets.SEGWAY_CHARTS_WRITE }} 
+          SEGWAY_CHARTS_REPO: ${{ vars.SEGWAY_CHARTS_REPO }}
