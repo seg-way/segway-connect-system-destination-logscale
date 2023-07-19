@@ -1,9 +1,10 @@
+#
 {%- for filter in config["filters"] %}
 filter {{ filter.name }}{
     {{ filter.condition }}
 };
 {% endfor %}
-
+#
 {%- for repo in config["repos"] %}
 destination d_logscale_{{ instance }}__{{ repo["name"] }}{
     logscale(
@@ -13,7 +14,7 @@ destination d_logscale_{{ instance }}__{{ repo["name"] }}{
     );
 };
 {% endfor %}
-
+#
 {%- for logPath in config["logPaths"] %}
 logpath {{ logPath.name }}{
     {%- if logPath["filters"] %}
@@ -31,3 +32,4 @@ logpath {{ logPath.name }}{
     {%- endif %}
 };
 {% endfor %}
+#
