@@ -1,0 +1,33 @@
+{%- for filter in config["filters"] %}
+filter {{ filter.name }}{
+    {{ filter.condition }}
+};
+{% endfor %}
+
+{%- for repo in config["repos"] %}
+destination d_logscale_{{ instance }}__{{ repo["name"] }}{
+    logscale(
+        url('{{ url }}')
+        token('{{ repo['token'] }}')
+        attributes("--scope none .Vendor.* --shift 1 .ecs.* --shift 5")
+    );
+};
+{% endfor %}
+
+{%- for logPath in config["logPaths"] %}
+logpath {{ logPath.name }}{
+    {%- if logPath["filters"] %}
+    filter {
+        {{ ' or '.join(logPath["filters"]) }};
+    };
+    {%- endif %}
+    {%- for destination in logPath["destinations"] %}
+    destination {
+        d_logscale_{{ instance }}__{{ destination }}();
+    };
+    {%- endfor %}
+    {%- if logPath.flags %}
+    flags({{ ','.join(logPath.flags) }});
+    {%- endif %}
+};
+{% endfor %}
