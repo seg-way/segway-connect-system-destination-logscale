@@ -10,3 +10,32 @@ secret:
   name: ""
   url: ""
   token: ""
+config:
+  # name:
+  annotations: {}
+  syslogng:
+    repos:
+      - name: repo1
+        token: value1
+      - name: repo2
+        token: value2
+        isCatchAll: true
+    filters:
+      - name: f_azure
+        condition: |-
+          tags('vendor:microsoft') and tags('product:azure');
+
+    logPaths:
+      - name: path1
+        filters:
+          - filter(f_azure)
+
+        destinations:
+          - repo1
+        flags: [catchall]
+      - name: fallback
+        destinations:
+          - repo2
+        flags: [fallback]
+
+    fallback: repo2

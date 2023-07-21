@@ -71,3 +71,15 @@ Create the name of the secret to use
 {{- default "default" .Values.secret.name }}
 {{- end }}
 {{- end }}
+
+{{/*
+Create the name of the configmap to use
+*/}}
+{{- define "segway-sys-dest-logscale.configmapname" -}}
+{{- if .Values.secret.create }}
+{{- default (include "segway-sys-dest-logscale.fullname" .) .Values.secret.name }}
+{{- else }}
+{{- default "default" .Values.config.name }}
+{{- end }}
+{{- end }}
+

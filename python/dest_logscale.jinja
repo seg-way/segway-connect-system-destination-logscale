@@ -16,7 +16,8 @@ destination d_logscale_{{ instance }}__{{ repo["name"] }}{
 {% endfor %}
 #
 {%- for logPath in config["logPaths"] %}
-logpath {{ logPath.name }}{
+# {{ logPath.name }}
+logpath {
     {%- if logPath["filters"] %}
     filter {
         {{ ' or '.join(logPath["filters"]) }};
