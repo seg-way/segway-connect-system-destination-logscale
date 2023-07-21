@@ -24,10 +24,8 @@ log {{ logPath.name }}{
     };
     {%- endif %}
     {%- for destination in logPath["destinations"] %}
-    destination {
-        destination(d_logscale_{{ instance }}__{{ destination }});
-    };
-    {%- endfor %}
+    destination(d_logscale_{{ instance }}__{{ destination }});
+    {% endfor %}
     {%- if logPath.flags %}
     flags({{ ','.join(logPath.flags) }})
     {%- endif %}
