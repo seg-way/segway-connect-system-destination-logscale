@@ -43,11 +43,11 @@ jobs:
         id: version
         uses: cycjimmy/semantic-release-action@v3.4.2
         with:
-          semantic_version: 19
+          # semantic_version: 19
           extra_plugins: |
             @semantic-release/exec
             @semantic-release/git
-            @google/semantic-release-replace-plugin
+            # @google/semantic-release-replace-plugin
             conventional-changelog-conventionalcommits
           dry_run: true
         env:
@@ -139,7 +139,7 @@ jobs:
         id: version
         uses: cycjimmy/semantic-release-action@v3.4.2
         with:
-          semantic_version: 19
+          # semantic_version: 19
           extra_plugins: |
             @semantic-release/exec
             @semantic-release/git
