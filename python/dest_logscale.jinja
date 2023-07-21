@@ -27,7 +27,7 @@ log {{ logPath.name }}{
     destination(d_logscale_{{ instance }}__{{ destination }});
     {% endfor %}
     {%- if logPath.flags %}
-    flags({{ ','.join(logPath.flags) }})
+    flags({{ ','.join(logPath.flags) }});
     {%- endif %}
 };
 {% endfor %}
