@@ -9,17 +9,15 @@ filters:
     condition: |-
       tag('vendor:microsoft') and tag('product:azure');
 
-logPaths:
-  - name: path1
-    filters:
-      - filter(f_azure)
+logPaths: []
+  # - name: path1
+  #   filters:
+  #     - filter(f_azure)
       
-    destinations:
-      - repo1
-    flags: [catchall]
-  - name: fallback
-    destinations:
-      - repo2
-    flags: [fallback]
-
-fallback: repo2
+  #   destinations:
+  #     - repo1
+  #   flags: [catchall]
+  # - name: fallback
+  #   destinations:
+  #     - repo2
+  #   flags: [fallback]
