@@ -48,7 +48,7 @@ jobs:
             @semantic-release/exec
             @semantic-release/git
             # @google/semantic-release-replace-plugin
-            conventional-changelog-conventionalcommits
+            # conventional-changelog-conventionalcommits
           dry_run: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -143,7 +143,7 @@ jobs:
           extra_plugins: |
             @semantic-release/exec
             @semantic-release/git
-            conventional-changelog-conventionalcommits
+            # conventional-changelog-conventionalcommits
         env:
           GITHUB_TOKEN: ${{ github.token }}
           SEGWAY_CHARTS_WRITE: ${{ secrets.SEGWAY_CHARTS_WRITE }} 
