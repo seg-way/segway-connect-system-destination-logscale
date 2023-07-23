@@ -8,8 +8,8 @@ spec:
   type: {{ .Values.service.type }}
   ports:
     - port: {{ .Values.service.port }}
-      targetPort: http
+      targetPort: syslog-tcp
       protocol: TCP
-      name: http
+      name: syslog-tcp
   selector:
     {{- include "segway-sys-dest-logscale.selectorLabels" . | nindent 4 }}
