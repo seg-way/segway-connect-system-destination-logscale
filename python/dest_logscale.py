@@ -17,6 +17,10 @@ def main():
     with open(config_file, "r") as file:
         config = safe_load(file)
 
+    for logPath in config['logPaths']:
+        if "flow-control" not in logPath['flags']:
+            logPath['flags'].append("flow-control")
+                
     conf = tm.render(
         config=config,
         instance=os.environ.get("SEGWAY_DEST_LOGSCALE_INSTANCE", "unknown_instance"),
