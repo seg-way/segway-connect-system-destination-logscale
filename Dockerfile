@@ -1,4 +1,4 @@
-FROM ghcr.io/seg-way/containers/segway-connect-system-base-destination:1.4.4
+FROM ghcr.io/seg-way/containers/segway-connect-system-base-destination:1.4.5
 
 COPY etc/syslog-ng/conf.d /etc/syslog-ng/conf.d
 
