@@ -10,7 +10,6 @@ destination d_logscale_{{ instance }}__{{ repo["name"] }}{
     logscale(
         url('{{ url }}')
         token('{{ repo['token'] }}')
-        attributes("--scope none .Vendor.* --shift 1 .ecs.* --shift 5")
         persist-name("logscale_{{ instance }}__{{ repo["name"] }}")
     );
 };
