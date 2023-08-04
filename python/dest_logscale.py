@@ -20,6 +20,8 @@ def main():
     for logPath in config['logPaths']:
         if "flow-control" not in logPath['flags']:
             logPath['flags'].append("flow-control")
+        if 'tags' not in logPath:
+            logPath['tags'] = []
                 
     conf = tm.render(
         config=config,

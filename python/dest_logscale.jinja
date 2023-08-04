@@ -30,6 +30,9 @@ log {{ logPath.name }}{
     {%- else %}
         set('t_logscale_parsed_w_raw', value('.logscale.template'));
     {%- endif %}
+    {%- for tag in logPath.tags %}    
+        set("{{ tag.value }}", value('{{ tag.name }}'));
+    {%- endfor %}
     };
     
 

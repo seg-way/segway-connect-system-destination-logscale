@@ -16,6 +16,13 @@ logPaths:
       
     destinations:
       - repo1
+    template: t_logscale_parsed
+    tags:
+      - name: "#Vendor"
+        value: microsoft
+      - name: "#type"
+        value: "micrososft-azure-ad"
+
     flags: [catchall]
   - name: fallback
     destinations:
