@@ -23,6 +23,16 @@ log {{ logPath.name }}{
         {{ ' or '.join(logPath["filters"]) }};
     };
     {%- endif %}
+
+    rewrite {
+    {%- if logPath.template %}
+        set('{{ logPath.template }}', value('.logscale.template'));
+    {%- else %}
+        set('t_logscale_parsed_w_raw', value('.logscale.template'));
+    {%- endif %}
+    };
+    
+
     {%- for destination in logPath["destinations"] %}
     destination(d_logscale_{{ instance }}__{{ destination }});
     {% endfor %}
