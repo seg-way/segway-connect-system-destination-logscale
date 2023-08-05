@@ -3,6 +3,6 @@ FROM ghcr.io/seg-way/containers/segway-connect-system-base-destination:2.0.0-nex
 COPY etc/syslog-ng/conf.d /etc/syslog-ng/conf.d
 
 COPY python /app/plugin
-RUN . /app/.venv/bin/activate ;\
-    pushd /app/plugin ;\
+RUN pushd /app/plugin ;\
+    poetry config virtualenvs.path /app/.venv/bin/activate ;\
     poetry install
