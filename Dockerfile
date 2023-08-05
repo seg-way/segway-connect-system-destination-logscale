@@ -1,10 +1,24 @@
-FROM ghcr.io/seg-way/containers/segway-connect-system-base-destination:2.0.0-next-major.5
+ARG REGISTRY=ghcr.io/seg-way/containers/segway-connect-system-base-destination
+ARG BASEVERSION=2.0.0-next-major.5
+FROM $REGISTRY:$BASEVERSION as builder
 
-COPY etc/syslog-ng/conf.d /etc/syslog-ng/conf.d
+
+RUN apk add -U --upgrade --no-cache \
+    python3-dev \
+    libffi-dev
 
 COPY python /app/plugin
-RUN cd /app/plugin ;\
-    poetry config virtualenvs.create false ;\
-    poetry install -n --no-ansi --no-dev ;\
-    pip cache purge
+
+RUN python3 -m venv /app/.venv ;\
+    . /app/.venv/bin/activate ;\
+    cd /app/plugin;\
+    poetry install --no-dev -n
+
+FROM $REGISTRY:$BASEVERSION
+
+ENV VIRTUAL_ENV=/app/.venv
+COPY --from=builder /app/.venv /app/.venv
+COPY etc/syslog-ng/conf.d /etc/syslog-ng/conf.d
+COPY python /app/plugin
+
 USER ${uid}:${gid}
