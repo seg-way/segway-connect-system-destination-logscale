@@ -12,7 +12,7 @@ spec:
     name: {{ include "segway-sys-dest-logscale.fullname" . }}               # Mandatory. Must be in the same namespace as the ScaledObject
   pollingInterval:  60                                      # Optional. Default: 30 seconds
   cooldownPeriod:   300                                     # Optional. Default: 300 seconds
-  minReplicas: {{ .Values.autoscaling.minReplicas }}
+  minReplicaCount:  {{ .Values.autoscaling.minReplicas }}                                     # Optional. Default: 100
   maxReplicaCount:  {{ .Values.autoscaling.maxReplicas }}                                     # Optional. Default: 100
   advanced:                                                 # Optional. Section to specify advanced options
     horizontalPodAutoscalerConfig:                          # Optional. Section to specify HPA related options
@@ -45,7 +45,7 @@ spec:
   {{- end }}
   - type: kubernetes-workload
     metadata:
-      podSelector: 'app.kubernetes.io/part-of: segway, app.kubernetes.io/component in (source, logpath)'
+      podSelector: 'app.kubernetes.io/part-of=segway, app.kubernetes.io/component in (source, logpath)'
       value: '0.01'
       activationValue: '1'  
 {{- end }}
