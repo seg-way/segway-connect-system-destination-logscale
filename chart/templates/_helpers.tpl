@@ -39,7 +39,9 @@ helm.sh/chart: {{ include "segway-sys-dest-logscale.chart" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
+app.kubernetes.io/component: source
 app.kubernetes.io/managed-by: {{ .Release.Service }}
+app.kubernetes.io/part-of: segway
 {{- end }}
 
 {{/*
