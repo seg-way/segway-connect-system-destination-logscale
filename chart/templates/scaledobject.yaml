@@ -9,9 +9,10 @@ metadata:
     scaledobject.keda.sh/transfer-hpa-ownership: "true" 
 spec:
   scaleTargetRef:
-    name: {{ include "segway-sys-dest-logscale.fullname" . }}                # Mandatory. Must be in the same namespace as the ScaledObject
+    name: {{ include "segway-sys-dest-logscale.fullname" . }}               # Mandatory. Must be in the same namespace as the ScaledObject
   pollingInterval:  60                                      # Optional. Default: 30 seconds
   cooldownPeriod:   300                                     # Optional. Default: 300 seconds
+  minReplicas: {{ .Values.autoscaling.minReplicas }}
   maxReplicaCount:  {{ .Values.autoscaling.maxReplicas }}                                     # Optional. Default: 100
   advanced:                                                 # Optional. Section to specify advanced options
     horizontalPodAutoscalerConfig:                          # Optional. Section to specify HPA related options
