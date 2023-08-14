@@ -5,7 +5,7 @@ filter {{ filter.name }}{
 };
 {% endfor %}
 #
-destination d_logscale_{{ instance }}{
+destination d_logscale{
     logscale(
         url('{{ url }}')
         token('{{ token }}')
@@ -33,7 +33,7 @@ log {{ logPath.name }}{
     };
     
 
-    destination(d_logscale_{{ instance }}__{{ destination }});
+    destination(d_logscale);
     
     {%- if logPath.flags %}
     flags({{ ','.join(logPath.flags) }});
