@@ -21,7 +21,7 @@ if SEGWAY_DEST_LOGSCALE_PORT == "":
 def main():
 
     logscaleURL = furl().set(
-        netloc = SEGWAY_DEST_LOGSCALE_HOST,
+        host = SEGWAY_DEST_LOGSCALE_HOST,
         scheme = SEGWAY_DEST_LOGSCALE_PROTOCOL,
         port = SEGWAY_DEST_LOGSCALE_PORT
     )
