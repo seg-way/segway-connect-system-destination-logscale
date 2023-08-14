@@ -1,9 +1,3 @@
-repos:
-  - name: repo1
-    token: value1
-  - name: repo2
-    token: value2
-    isCatchAll: true
 filters:
   - name: f_azure
     condition: |-
@@ -13,18 +7,22 @@ logPaths:
   - name: path1
     filters:
       - filter(f_azure)
-      
-    destinations:
-      - repo1
     template: t_logscale_parsed
     tags:
-      - name: "#Vendor"
+      - name: "Vendor"
         value: microsoft
-      - name: "#type"
+      - name: "type"
+        value: "micrososft-azure-ad"
+      - name: "repo"
         value: "micrososft-azure-ad"
 
     flags: [catchall]
   - name: fallback
-    destinations:
-      - repo2
+    tags:
+      - name: "Vendor"
+        value: unknown
+      - name: "type"
+        value: "segway-fallback"
+      - name: "repo"
+        value: "segway-fallback"
     flags: [fallback]

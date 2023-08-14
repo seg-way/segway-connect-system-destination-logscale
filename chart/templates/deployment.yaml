@@ -42,10 +42,16 @@ spec:
             value: /app/config/
           - name: SEGWAY_SYSLOG_PORT
             value: {{ .Values.service.port | quote }}
-          - name: SEGWAY_DEST_LOGSCALE_URL
-            value: {{ .Values.secret.url | quote }}
-          - name: SEGWAY_DEST_LOGSCALE_INSTANCE
-            value: {{ .Release.Name | quote }}
+          - name: SEGWAY_DEST_LOGSCALE_HOST
+            value: {{ .Values.secret.data.host }}
+          - name: SEGWAY_DEST_LOGSCALE_PORT
+            value: {{ .Values.secret.data.port | default "" | quote }}
+          - name: SEGWAY_DEST_LOGSCALE_PROTOCOL
+            value: {{ .Values.secret.data.protocol | default "https"}}
+          - name: SEGWAY_DEST_LOGSCALE_TOKEN
+            value: {{ .Values.secret.data.token }}
+          - name: SEGWAY_DEST_LOGSCALE_INSTANCE_NAME
+            value: {{ .Values.secret.data.instanceName | default .Release.Name | quote }}
           ports:
             - name: syslog-tcp
               containerPort: {{ .Values.service.port }}

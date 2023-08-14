@@ -5,15 +5,12 @@ filter {{ filter.name }}{
 };
 {% endfor %}
 #
-{%- for repo in config["repos"] %}
-destination d_logscale_{{ instance }}__{{ repo["name"] }}{
+destination d_logscale_{{ instance }}{
     logscale(
         url('{{ url }}')
-        token('{{ repo['token'] }}')
-        persist-name("logscale_{{ instance }}__{{ repo["name"] }}")
+        token('{{ token }}')
     );
 };
-{% endfor %}
 #
 {%- for logPath in config["logPaths"] %}
 # 
@@ -36,9 +33,8 @@ log {{ logPath.name }}{
     };
     
 
-    {%- for destination in logPath["destinations"] %}
     destination(d_logscale_{{ instance }}__{{ destination }});
-    {% endfor %}
+    
     {%- if logPath.flags %}
     flags({{ ','.join(logPath.flags) }});
     {%- endif %}
