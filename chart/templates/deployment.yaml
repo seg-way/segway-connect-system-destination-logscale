@@ -43,13 +43,25 @@ spec:
           - name: SEGWAY_SYSLOG_PORT
             value: {{ .Values.service.port | quote }}
           - name: SEGWAY_DEST_LOGSCALE_HOST
-            value: {{ .Values.secret.data.host }}
+            valueFrom:
+              secretKeyRef:
+                name: {{ include "segway-sys-dest-logscale.secretname" . }}
+                key: host
           - name: SEGWAY_DEST_LOGSCALE_PORT
-            value: {{ .Values.secret.data.port | default "" | quote }}
+            valueFrom:
+              secretKeyRef:
+                name: {{ include "segway-sys-dest-logscale.secretname" . }}
+                key: port
           - name: SEGWAY_DEST_LOGSCALE_PROTOCOL
-            value: {{ .Values.secret.data.protocol | default "https"}}
+            valueFrom:
+              secretKeyRef:
+                name: {{ include "segway-sys-dest-logscale.secretname" . }}
+                key: protocol
           - name: SEGWAY_DEST_LOGSCALE_TOKEN
-            value: {{ .Values.secret.data.token }}
+            valueFrom:
+              secretKeyRef:
+                name: {{ include "segway-sys-dest-logscale.secretname" . }}
+                key: token
           - name: SEGWAY_DEST_LOGSCALE_INSTANCE_NAME
             value: {{ .Values.secret.data.instanceName | default .Release.Name | quote }}
           ports:
