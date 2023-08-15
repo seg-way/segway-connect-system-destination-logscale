@@ -8,21 +8,13 @@ logPaths:
     filters:
       - filter(f_azure)
     template: t_logscale_parsed
+    repo: micrososft-azure-ad
     tags:
       - name: "Vendor"
         value: microsoft
       - name: "type"
         value: "micrososft-azure-ad"
-      - name: "repo"
-        value: "micrososft-azure-ad"
-
     flags: [catchall]
   - name: fallback
-    tags:
-      - name: "Vendor"
-        value: unknown
-      - name: "type"
-        value: "segway-fallback"
-      - name: "repo"
-        value: "segway-fallback"
+    repo: segway-fallback
     flags: [fallback]

@@ -72,7 +72,7 @@ autoscaling:
   enabled: false
   keda: false
   minReplicas: 2
-  maxReplicas: 100
+  maxReplicas: 3
   targetCPUUtilizationPercentage: 80
   targetMemoryUtilizationPercentage: 80
 
