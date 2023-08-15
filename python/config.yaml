@@ -1,7 +1,7 @@
 filters:
   - name: f_azure
     condition: |-
-      tag('vendor:microsoft') and tag('product:azure');
+      tags('vendor:microsoft') and tags('product:azure');
 
 logPaths:
   - name: path1
@@ -15,5 +15,8 @@ logPaths:
     type: "micrososft-azure-ad"
     flags: [catchall]
   - name: fallback
+    tags:
+      - name: "Vendor"
+        value: unknown
     repo: segway-fallback
     flags: [fallback]
