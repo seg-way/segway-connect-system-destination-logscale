@@ -27,7 +27,13 @@ log {{ logPath.name }}{
     {%- else %}
         set('t_logscale_parsed_w_raw', value('.logscale.template'));
     {%- endif %}
-        set("{{ logPath.repo }}", value('.logscale.repo'));
+        set("{{ logPath.repo }}", value('.logscale.hec.index'));
+    {%- if logPath.source %}
+        set("{{ logPath.source }}", value('.logscale.hec.source'));
+    {%- endif %}
+    {%- if logPath.sourcetype %}
+        set("{{ logPath.sourcetype }}", value('.logscale.hec.sourcetype'));
+    {%- endif %}
     };
 
 

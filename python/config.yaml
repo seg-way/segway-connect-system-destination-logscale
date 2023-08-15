@@ -12,8 +12,7 @@ logPaths:
     tags:
       - name: "Vendor"
         value: microsoft
-      - name: "type"
-        value: "micrososft-azure-ad"
+    type: "micrososft-azure-ad"
     flags: [catchall]
   - name: fallback
     repo: segway-fallback
