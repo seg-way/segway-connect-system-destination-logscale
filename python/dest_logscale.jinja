@@ -13,7 +13,7 @@ destination d_logscale{
 };
 #
 {%- for logPath in config["logPaths"] %}
-# 
+#
 log {{ logPath.name }}{
     {%- if logPath["filters"] %}
     filter {
@@ -27,14 +27,14 @@ log {{ logPath.name }}{
     {%- else %}
         set('t_logscale_parsed_w_raw', value('.logscale.template'));
     {%- endif %}
-    {%- for tag in logPath.tags %}    
+    {%- for tag in logPath.tags %}
         set("{{ tag.value }}", value('.logscale.tags.{{ tag.name }}'));
     {%- endfor %}
     };
-    
+
 
     destination(d_logscale);
-    
+
     {%- if logPath.flags %}
     flags({{ ','.join(logPath.flags) }});
     {%- endif %}
