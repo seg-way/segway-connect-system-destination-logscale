@@ -37,15 +37,33 @@ spec:
           args:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-          env: 
+          env:
           - name: SEGWAY_CONFIG_PATH
             value: /app/config/
           - name: SEGWAY_SYSLOG_PORT
             value: {{ .Values.service.port | quote }}
-          - name: SEGWAY_DEST_LOGSCALE_URL
-            value: {{ .Values.secret.url | quote }}
-          - name: SEGWAY_DEST_LOGSCALE_INSTANCE
-            value: {{ .Release.Name | quote }}
+          - name: SEGWAY_DEST_LOGSCALE_HOST
+            valueFrom:
+              secretKeyRef:
+                name: {{ include "segway-sys-dest-logscale.secretname" . }}
+                key: host
+          - name: SEGWAY_DEST_LOGSCALE_PORT
+            valueFrom:
+              secretKeyRef:
+                name: {{ include "segway-sys-dest-logscale.secretname" . }}
+                key: port
+          - name: SEGWAY_DEST_LOGSCALE_PROTOCOL
+            valueFrom:
+              secretKeyRef:
+                name: {{ include "segway-sys-dest-logscale.secretname" . }}
+                key: protocol
+          - name: SEGWAY_DEST_LOGSCALE_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: {{ include "segway-sys-dest-logscale.secretname" . }}
+                key: token
+          - name: SEGWAY_DEST_LOGSCALE_INSTANCE_NAME
+            value: {{ .Values.secret.data.instanceName | default .Release.Name | quote }}
           ports:
             - name: syslog-tcp
               containerPort: {{ .Values.service.port }}
@@ -62,19 +80,19 @@ spec:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
           - mountPath: /var/lib/syslog-ng/
-            name: cache-volume          
+            name: cache-volume
           - name: config
             mountPath: "/app/config"
-            readOnly: true            
+            readOnly: true
       volumes:
       - name: cache-volume
         emptyDir:
-          sizeLimit: 10Mi          
+          sizeLimit: 10Mi
       - name: config
         configMap:
           # Provide the name of the ConfigMap you want to mount.
           name: {{ include "segway-sys-dest-logscale.configmapname" . }}
-              
+
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

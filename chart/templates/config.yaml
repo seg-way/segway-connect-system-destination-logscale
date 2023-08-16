@@ -8,7 +8,7 @@ metadata:
   annotations:
     {{- toYaml . | nindent 4 }}
   {{- end }}
-data: 
+data:
   config.yaml: |
   {{- with .Values.config.syslogng }}
       {{- toYaml . | nindent 4 }}

@@ -5,18 +5,15 @@ filter {{ filter.name }}{
 };
 {% endfor %}
 #
-{%- for repo in config["repos"] %}
-destination d_logscale_{{ instance }}__{{ repo["name"] }}{
+destination d_logscale{
     logscale(
         url('{{ url }}')
-        token('{{ repo['token'] }}')
-        persist-name("logscale_{{ instance }}__{{ repo["name"] }}")
+        token('{{ token }}')
     );
 };
-{% endfor %}
 #
 {%- for logPath in config["logPaths"] %}
-# 
+#
 log {{ logPath.name }}{
     {%- if logPath["filters"] %}
     filter {
@@ -30,15 +27,20 @@ log {{ logPath.name }}{
     {%- else %}
         set('t_logscale_parsed_w_raw', value('.logscale.template'));
     {%- endif %}
+        set("{{ logPath.repo }}", value('.logscale.hec.index'));
+    {%- if logPath.source %}
+        set("{{ logPath.source }}", value('.logscale.hec.source'));
+    {%- endif %}
+    {%- if logPath.sourcetype %}
+        set("{{ logPath.sourcetype }}", value('.logscale.hec.sourcetype'));
+    {%- endif %}
     {%- for tag in logPath.tags %}    
         set("{{ tag.value }}", value('.logscale.tags.{{ tag.name }}'));
     {%- endfor %}
     };
-    
 
-    {%- for destination in logPath["destinations"] %}
-    destination(d_logscale_{{ instance }}__{{ destination }});
-    {% endfor %}
+    destination(d_logscale);
+
     {%- if logPath.flags %}
     flags({{ ','.join(logPath.flags) }});
     {%- endif %}

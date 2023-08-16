@@ -12,7 +12,7 @@ COPY python /app/plugin
 RUN python3 -m venv /app/.venv ;\
     . /app/.venv/bin/activate ;\
     cd /app/plugin;\
-    poetry install --no-dev -n
+    poetry install --only main -n
 
 FROM $REGISTRY:$BASEVERSION
 

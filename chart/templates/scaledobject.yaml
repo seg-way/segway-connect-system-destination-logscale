@@ -6,7 +6,7 @@ metadata:
   labels:
     {{- include "segway-sys-dest-logscale.labels" . | nindent 4 }}
   annotations:
-    scaledobject.keda.sh/transfer-hpa-ownership: "true" 
+    scaledobject.keda.sh/transfer-hpa-ownership: "true"
 spec:
   scaleTargetRef:
     name: {{ include "segway-sys-dest-logscale.fullname" . }}               # Mandatory. Must be in the same namespace as the ScaledObject
@@ -16,7 +16,7 @@ spec:
   maxReplicaCount:  {{ .Values.autoscaling.maxReplicas }}                                     # Optional. Default: 100
   advanced:                                                 # Optional. Section to specify advanced options
     horizontalPodAutoscalerConfig:                          # Optional. Section to specify HPA related options
-      name: {{ include "segway-sys-dest-logscale.fullname" . }} 
+      name: {{ include "segway-sys-dest-logscale.fullname" . }}
       behavior:                                             # Optional. Use to modify HPA's scaling behavior
         scaleDown:
           stabilizationWindowSeconds: 300
@@ -25,27 +25,27 @@ spec:
             value: 100
             periodSeconds: 15
   triggers:
-  {{- if .Values.autoscaling.targetCPUUtilizationPercentage }}      
+  {{- if .Values.autoscaling.targetCPUUtilizationPercentage }}
   - type: cpu
     metricType: Utilization # Allowed types are 'Utilization' or 'AverageValue'
     metadata:
       value: {{ .Values.autoscaling.targetCPUUtilizationPercentage | quote }}
-      {{- if ge (int .Capabilities.KubeVersion.Minor) 27 }}      
+      {{- if ge (int .Capabilities.KubeVersion.Minor) 27 }}
       containerName: {{ .Chart.Name }}
-      {{- end }}      
-  {{- end }}      
-  {{- if .Values.autoscaling.targetMemoryUtilizationPercentage }}      
+      {{- end }}
+  {{- end }}
+  {{- if .Values.autoscaling.targetMemoryUtilizationPercentage }}
   - type: memory
     metricType: Utilization # Allowed types are 'Utilization' or 'AverageValue'
     metadata:
       value: {{ .Values.autoscaling.targetMemoryUtilizationPercentage | quote }}
-      {{- if ge (int .Capabilities.KubeVersion.Minor) 27 }}      
+      {{- if ge (int .Capabilities.KubeVersion.Minor) 27 }}
       containerName: {{ .Chart.Name }}
-      {{- end }}      
+      {{- end }}
   {{- end }}
   - type: kubernetes-workload
     metadata:
       podSelector: 'app.kubernetes.io/part-of=segway, app.kubernetes.io/component in (source, logpath)'
       value: '0.01'
-      activationValue: '1'  
+      activationValue: '1'
 {{- end }}
