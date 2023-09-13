@@ -1,0 +1,88 @@
+secret:
+  instanceName: "main"
+  host: logscale-ps-inputs.gcp.logsr.life
+  port: "443"
+  protocol: https
+  token: tGoYnKZNq6vz1c1tpvdQ5JwpmiO3XMWF~nFRPDGZhW2vbfilwJW7CqsVQ3T6LdMKqjax13YtIpCG4
+
+metricsExporter:
+  enabled: true
+
+podMonitor:
+  enabled: true
+config:
+  # template assumes all destinations are in use remove
+  # both filter and logpath references for unused features filters may remain
+  syslogng:
+    filters:
+      - name: f_azure
+        condition: |-
+          tags('vendor:microsoft') and tags('suite:azure');
+      - name: f_azuread
+        condition: |-
+          tags('vendor:microsoft') and tags('suite:aad');
+      - name: f_defender
+        condition: |-
+          tags('vendor:microsoft') and tags('suite:defender');
+      - name: f_intune
+        condition: |-
+          tags('vendor:microsoft') and tags('suite:intune');
+      - name: f_mimecast_cloudgateway_siem
+        condition: |-
+          tags('vendor:mimecast') and tags('suite:cloudgateway');
+    logPaths:
+      - name: azure
+        filters:
+          - filter(f_azure)
+        flags: [catchall, final]
+        template: t_logscale_parsed
+        tags:
+          - name: vendor
+            value: microsoft
+        repo: iaas-microsoft-azure
+        sourcetype: microsoft-azure-event-hub
+      - name: azuread
+        filters:
+          - filter(f_azuread)
+        flags: [catchall, final]
+        template: t_logscale_parsed
+        tags:
+          - name: vendor
+            value: microsoft
+        sourcetype: saas-microsoft-azuread
+        repo: saas-microsoft-azuread
+      - name: defender
+        filters:
+          - filter(f_defender)
+        flags: [catchall, final]
+        template: t_logscale_parsed
+        tags:
+          - name: vendor
+            value: microsoft
+        sourcetype: windows-defender-365
+        repo: saas-microsoft-defender
+      - name: intune
+        filters:
+          - filter(f_intune)
+        flags: [catchall, final]
+        template: t_logscale_parsed
+        tags:
+          - name: vendor
+            value: microsoft
+        sourcetype: micosoft-intune
+        repo: saas-microsoft-intune
+      # - name: mimecast_cloudgateway_siem
+      #   filters:
+      #     - filter(f_mimecast_cloudgateway_siem)
+      #   flags: [catchall, final]
+      #   template: t_logscale_parsed
+      #   tags:
+      #     - name: vendor
+      #       value: mimecast
+      #   sourcetype: mimecast
+      #   repo: saas-mimecast-cloud-gateway
+      - name: fallback
+        template: t_logscale_parsed
+        sourcetype: segway-unknown
+        repo: app-segway-fallback
+        flags: [catchall, fallback, final]

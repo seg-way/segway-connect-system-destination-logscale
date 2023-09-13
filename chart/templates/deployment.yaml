@@ -28,7 +28,7 @@ spec:
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
-        - name: {{ .Chart.Name }}
+        - name: syslog-ng
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
@@ -68,14 +68,13 @@ spec:
             - name: syslog-tcp
               containerPort: {{ .Values.service.port }}
               protocol: TCP
-          # livenessProbe:
-          #   httpGet:
-          #     path: /
-          #     port: http
-          # readinessProbe:
-          #   httpGet:
-          #     path: /
-          #     port: http
+          livenessProbe:
+            initialDelaySeconds: 5
+            periodSeconds: 30
+            timeoutSeconds: 5
+            failureThreshold: 3
+            exec:
+              command: ["syslog-ng-ctl", "healthcheck", "--timeout", "5"]
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
@@ -84,6 +83,22 @@ spec:
           - name: config
             mountPath: "/app/config"
             readOnly: true
+      {{- if .Values.metricsExporter.enabled }}
+        - name: metrics-exporter
+          securityContext:
+            {{- toYaml .Values.metricsExporter.securityContext | nindent 12 }}
+          image: "{{ .Values.metricsExporter.image.repository }}:{{ .Values.metricsExporter.image.tag }}"
+          imagePullPolicy: {{ .Values.metricsExporter.image.pullPolicy }}
+          args:
+            - --socket.path=/var/lib/syslog-ng/syslog-ng.ctl
+          ports:
+            - name: metrics-http
+              containerPort: 9577
+              protocol: TCP
+          volumeMounts:
+          - mountPath: /var/lib/syslog-ng/
+            name: cache-volume
+      {{- end }}
       volumes:
       - name: cache-volume
         emptyDir:

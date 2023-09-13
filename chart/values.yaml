@@ -31,7 +31,8 @@ secret:
   # The name of the service account to use.
   # If not set and create is true, a name is generated using the fullname template
   name: ""
-  data: {}
+  data:
+    {}
     # instanceName: ""
     # host: ""
     # port: "443"
@@ -86,3 +87,24 @@ config:
   # name:
   annotations: {}
   syslogng: {}
+
+metricsExporter:
+  enabled: false # deploy the axosyslog Deamonset with the axosyslog-metrics-exporter sidecar
+  image:
+    repository: ghcr.io/axoflow/axosyslog-metrics-exporter
+    pullPolicy: IfNotPresent # use k8s default behavior (Always for :latest, IfNotPresent otherwise)
+    tag: "0.0.1"
+  resources:
+    requests:
+      cpu: 10m
+      memory: 16Mi
+  securityContext:
+    capabilities:
+      drop:
+        - ALL
+    readOnlyRootFilesystem: true
+    runAsNonRoot: true
+    runAsUser: 1000
+
+podMonitor:
+  enable: false

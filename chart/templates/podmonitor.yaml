@@ -1,0 +1,30 @@
+{{- if .Values.podMonitor.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: {{ template "segway-sys-dest-logscale.fullname" . }}
+  namespace: monitoring
+  labels:
+    {{- include "segway-sys-dest-logscale.labels" . | nindent 4 }}
+    {{- with .Values.podMonitor.labels }}
+    {{- range $key, $value := . }}
+    {{ $key }}: {{ $value | quote }}
+    {{- end }}
+    {{- end }}
+  {{- with .Values.podMonitor.annotations }}
+  annotations:
+    {{- range $key, $value := . }}
+    {{ $key }}: {{ $value | quote }}
+    {{- end }}
+  {{- end }}
+spec:
+  namespaceSelector:
+    matchNames:
+    - {{ .Release.Namespace }}
+
+  selector:
+    matchLabels:
+      {{- include "segway-sys-dest-logscale.selectorLabels" . | nindent 6 }}
+  podMetricsEndpoints:
+    - port: metrics-http
+{{- end }}
