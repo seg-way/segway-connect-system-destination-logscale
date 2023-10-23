@@ -1,5 +1,5 @@
 ARG REGISTRY=ghcr.io/segateway/containers/segateway-destination
-ARG BASEVERSION=3.0.0
+ARG BASEVERSION=3.1.0
 FROM $REGISTRY:$BASEVERSION as builder
 
 
