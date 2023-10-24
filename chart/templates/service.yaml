@@ -11,5 +11,9 @@ spec:
       targetPort: syslog-tcp
       protocol: TCP
       name: syslog-tcp
+    - port: 4317
+      targetPort: otlp-http
+      protocol: TCP
+      name: otlp-http
   selector:
     {{- include "segway-sys-dest-logscale.selectorLabels" . | nindent 4 }}

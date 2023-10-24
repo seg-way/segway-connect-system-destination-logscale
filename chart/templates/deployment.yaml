@@ -68,6 +68,9 @@ spec:
             - name: syslog-tcp
               containerPort: {{ .Values.service.port }}
               protocol: TCP
+            - name: otlp-http
+              containerPort: 4317
+              protocol: TCP
           # livenessProbe:
           #   httpGet:
           #     path: /
