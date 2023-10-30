@@ -23,7 +23,7 @@ log {{ logPath.name }}{
 
     rewrite {
         set('t_logscale_otel_msg', value('.logscale.template') condition("${.otel.com.segway.msgtemplate}" eq ""));
-        set('t_logscale_otel_msg', value('.logscale.template') condition("${.otel.com.segway.msgtemplate}" ne ""));
+        set('${.otel.com.segway.msgtemplate}', value('.logscale.template') condition("${.otel.com.segway.msgtemplate}" ne ""));
         set("{{ logPath.repo }}", value('.logscale.hec.index'));
     {%- if logPath.source %}
         set("{{ logPath.source }}", value('.logscale.hec.source'));
